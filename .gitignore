@@ -1,0 +1,12 @@
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Distribution / packaging
+/dist/
+/*.egg-info/
+/build/
+
+venv/
+venv_test/
+.idea/
