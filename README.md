@@ -3,6 +3,8 @@
 Speedy GUI is a Python package that provides a quick template graphical user interface (GUI) for running inference on image segmentation datasets. 
 It allows you to select a folder containing images, run a pre-trained PyTorch model, and save the predicted masks to a specified directory.
 
+https://github.com/justincharney/speedygui/assets/56408885/6a6435fe-3073-4618-a31a-3188ea58eb25
+
 ## Installation
 
 You can install the package from PyPI using pip:
