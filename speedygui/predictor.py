@@ -72,9 +72,9 @@ class Predictor:
 
         return results
 
-    def create_app(self, app_name, formal_name):
+    def create_app(self, app_name, formal_name, **kwargs):
         """
         Creates and returns the Toga application instance with the predictor functionality.
         """
-        app = PredictorApp(app_name, formal_name, self)
+        app = PredictorApp(app_name, formal_name, self, **kwargs)
         return app

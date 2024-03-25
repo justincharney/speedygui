@@ -22,8 +22,8 @@ OUTPUT_LABEL_STYLE = Pack(
 
 
 class PredictorApp(toga.App):
-    def __init__(self, app_name, formal_name, predictor):
-        super().__init__(app_name, formal_name)
+    def __init__(self, app_name, formal_name, predictor, **kwargs):
+        super().__init__(app_name, formal_name, **kwargs)
         self.predictor = predictor
 
     def startup(self):
@@ -32,7 +32,7 @@ class PredictorApp(toga.App):
         self.progress_bar = toga.ProgressBar(max=100, value=0, running=False, style=Pack(padding=5))
         main_box.add(self.progress_bar)
 
-        self.output_label = toga.MultilineTextInput(readonly=True, style=OUTPUT_LABEL_STYLE)
+        self.output_label = toga.MultilineTextInput(readonly=True, style=OUTPUT_LABEL_STYLE, value=self.description)
         main_box.add(self.output_label)
 
         button_box = toga.Box(style=Pack(direction=ROW, padding=10))

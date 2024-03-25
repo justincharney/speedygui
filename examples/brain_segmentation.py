@@ -102,9 +102,11 @@ dataloader_kwargs = {
 output_transform = None
 app_name = 'Predictor App'
 formal_name = 'org.example.predictor'
+description = ("To use this application, start by selecting a folder such as 'TCGA_CS_4941_19960909' containing tiff "
+               "images and masks")
 
 if __name__ == '__main__':
     predictor = Predictor(model, dataset_creator, dataloader_kwargs, save_predictions_fn=save_predictions_fn,
                           output_transform=output_transform, device=device)
-    app = predictor.create_app(app_name, formal_name)
+    app = predictor.create_app(app_name, formal_name, description=description)
     app.main_loop()
