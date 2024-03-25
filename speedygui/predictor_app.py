@@ -71,20 +71,28 @@ class PredictorApp(toga.App):
         threading.Thread(target=self.predict_thread).start()
 
     def predict_thread(self):
-        data = {"test": self.predictor.dataset_creator(self.folder_path)}
+        try:
+            data = {"test": self.predictor.dataset_creator(self.folder_path)}
 
-        # Set the callback function for the progress bar update
-        self.predictor.progress_callback = self.update_progress_callback
+            # Set the callback function for the progress bar update
+            self.predictor.progress_callback = self.update_progress_callback
 
-        # Perform inference
-        predictions = self.predictor.predict(data)["test"]
+            # Perform inference
+            predictions = self.predictor.predict(data)["test"]
 
-        # Save the predictions
-        predicted_masks_dir = self.predictor.save_predictions_fn(self.folder_path, predictions, data["test"])
+            # Save the predictions
+            predicted_masks_dir = self.predictor.save_predictions_fn(self.folder_path, predictions, data["test"])
 
-        # Update the output label on the main UI thread
-        self.loop.call_soon(lambda: self.update_output_label(f"Predicted masks saved in {predicted_masks_dir}"))
-        self.progress_bar.stop()
+            # Update the output label on the main UI thread
+            self.loop.call_soon(lambda: self.update_output_label(f"Predicted masks saved in {predicted_masks_dir}"))
+
+        except RuntimeError as e:
+            # Update the UI to reflect that an error occurred
+            error_message = f"Error during prediction: {str(e)}"
+            self.loop.call_soon(lambda: self.update_output_label(error_message))
+
+        finally:
+            self.progress_bar.stop()
 
     def update_output_label(self, message):
         self.output_label.value = message
