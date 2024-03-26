@@ -25,8 +25,12 @@ def tensor_to_image(tensor, normalize=True, mean=[0.485, 0.456, 0.406], std=[0.2
     Returns:
         PIL.Image: The converted PIL image.
     """
-    if tensor.shape[0] != 3:
-        raise ValueError("Input tensor must have 3 channels (RGB).")
+    num_channels = tensor.shape[0]
+    if num_channels == 1:
+        # Grayscale image
+        tensor = tensor.repeat(3, 1, 1)
+    elif num_channels != 3:
+        raise ValueError("Input tensor must have 1 or 3 channels.")
 
     if normalize:
         tensor = denormalize(tensor, mean=mean, std=std)
