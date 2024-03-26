@@ -14,6 +14,8 @@ class Predictor:
         self.progress_callback = progress_callback
         self.save_predictions_fn = save_predictions_fn
         self.output_transform = output_transform
+        self.example_inputs = []
+        self.example_outputs = []
 
     def create_dataloaders(self, data: Dict[str, Union[Dataset, Dict]]) -> Dict[str, DataLoader]:
         """
@@ -34,12 +36,13 @@ class Predictor:
             dataloaders[phase] = DataLoader(dataset, **self.dataloader_kwargs)
         return dataloaders
 
-    def predict(self, data: Dict[str, Union[Dataset, Dict]]) -> Dict[str, torch.Tensor]:
+    def predict(self, data: Dict[str, Union[Dataset, Dict]], batch_examples: int = 0) -> Dict[str, torch.Tensor]:
         """
         Performs prediction using the model and applies an optional transformation function to the outputs.
 
         Args:
             data (Dict[str, Union[Dataset, Dict]]): A dictionary containing the datasets or data dictionaries for each phase.
+            batch_examples (int): The number of batches to store examples from. These examples include the input, mask, and predicted output.
 
         Returns:
             Dict[str, torch.Tensor]: A dictionary with keys corresponding to phases and values being the transformed model outputs.
@@ -62,6 +65,11 @@ class Predictor:
                         outputs = torch.tensor(outputs, device=self.device)
                     all_predictions.append(outputs.cpu().detach())
 
+                    # Store examples if needed
+                    if batch_examples > 0 and batch_idx < batch_examples:
+                        self.example_inputs.extend(inputs.cpu().detach())
+                        self.example_outputs.extend(outputs.cpu().detach())
+
                     # Update progress
                     if self.progress_callback:
                         progress = int((batch_idx + 1) / len(dataloader) * 100)
@@ -72,9 +80,9 @@ class Predictor:
 
         return results
 
-    def create_app(self, app_name, formal_name, **kwargs):
+    def create_app(self, app_name, formal_name, mean=None, std=None, **kwargs):
         """
         Creates and returns the Toga application instance with the predictor functionality.
         """
-        app = PredictorApp(app_name, formal_name, self, **kwargs)
+        app = PredictorApp(app_name, formal_name, self, mean=mean, std=std, **kwargs)
         return app
