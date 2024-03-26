@@ -97,5 +97,5 @@ description = "To use this application, start by selecting the folder 'VOC2012'"
 if __name__ == '__main__':
     predictor = Predictor(model, dataset_creator, dataloader_kwargs, save_predictions_fn=save_predictions_fn,
                           output_transform=output_transform)
-    app = predictor.create_app(app_name, formal_name, description=description)
+    app = predictor.create_app(app_name, formal_name, description=description, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     app.main_loop()

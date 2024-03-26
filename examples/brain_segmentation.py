@@ -68,6 +68,10 @@ segmentation_model = torch.hub.load('mateuszbuda/brain-segmentation-pytorch', 'u
                                     in_channels=3, out_channels=1, init_features=32, pretrained=True)
 
 
+def output_transform(outputs):
+    return outputs[0]
+
+
 def save_predictions_fn(folder_path, predictions, dataset):
     """
     Saves the predictions and returns a string to the path that the predictions were saved
@@ -81,7 +85,7 @@ def save_predictions_fn(folder_path, predictions, dataset):
         mask_path = os.path.join(predicted_masks_dir, f"predicted_{image_name}")
 
         # Get the prediction for the current image
-        pred = predictions[idx][0]
+        pred = predictions[idx]
         binary_mask = (pred.cpu().numpy()).astype(np.uint8) * 255
 
         # Save image as tiff
@@ -99,7 +103,6 @@ dataloader_kwargs = {
     "shuffle": False,
     "num_workers": 0,
 }
-output_transform = None
 app_name = 'Predictor App'
 formal_name = 'org.example.predictor'
 description = ("To use this application, start by selecting a folder such as 'TCGA_CS_4941_19960909' containing tiff "
