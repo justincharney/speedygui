@@ -66,6 +66,17 @@ To run the examples, you need to install the example dependencies separately:
 2. Navigate to the `examples` directory: <br> `cd /path/to/speedygui_project/examples`
 3. Install the example dependencies: <br> ```pip install -r requirements.txt```
 
+You can also use `briefcase` to create and distribute the app (brain_segmentation). 
+This is based on using windows:
+1. Install the `briefcase` package: <br> ```pip install briefcase```
+2. Make any adjustments to the `/pyproject.toml` file or leave as defaults
+3. Test the application by running: <br> ```briefcase dev``` 
+4. Create your application by running: <br> ```briefcase create```
+5. Build your application by running: <br> ```briefcase build```
+6. Run your application with: <br> ```briefcase run```
+7. Package your app by running: <br> ```briefcase package```
+<br> This will create a msi file in the `dist` folder
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.

@@ -10,3 +10,5 @@ __pycache__/
 venv/
 venv_test/
 .idea/
+examples/brain_segmentation.dist-info/
+logs/

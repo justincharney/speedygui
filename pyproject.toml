@@ -1,0 +1,18 @@
+[tool.briefcase]
+project_name = "SpeedyGUI"
+bundle = "com.example"
+version = "0.1.0"
+
+[tool.briefcase.app.brain_segmentation]
+description = "A brief description of your application"
+sources = ['examples/brain_segmentation'] # if you've cloned this repository, you can add the 'speedygui' dirctory to the sources rather than as a requirement
+requires = [
+    'torchvision~=0.17.1',
+    'torch~=2.2.1',
+    'numpy~=1.26.4',
+    'pandas~=2.2.1',
+    'Pillow~=10.2.0',
+    'scikit-image~=0.22.0',
+    'toga~=0.4.2',
+    'speedygui'
+]
