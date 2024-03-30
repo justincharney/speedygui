@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="speedygui",
-    version="0.1.2",
+    version="0.1.3",
     author="Justin Charney",
     author_email="justin.charney@gmail.com",
     description="A simple template for creating GUI PyTorch medical image segmentation applications",
