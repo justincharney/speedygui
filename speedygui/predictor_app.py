@@ -73,6 +73,10 @@ class PredictorApp(toga.App):
             self.select_folder_button.enabled = True
 
     def display_examples(self, widget):
+        if not self.predictor.example_inputs:
+            self.output_label.value = "No examples available. Run the predictor first."
+            return
+
         example_window = toga.Window(title="Examples")
         example_box = toga.Box(style=Pack(direction=COLUMN, padding=10))
 
@@ -131,12 +135,12 @@ class PredictorApp(toga.App):
             predicted_masks_dir = self.predictor.save_predictions_fn(self.folder_path, predictions, data["test"])
 
             # Update the output label on the main UI thread
-            self.loop.call_soon(lambda: self.update_output_label(f"Predicted masks saved in {predicted_masks_dir}"))
+            self.loop.call_soon_threadsafe(lambda: self.update_output_label(f"Predicted masks saved in {predicted_masks_dir}"))
 
         except RuntimeError as e:
             # Update the UI to reflect that an error occurred
             error_message = f"Error during prediction: {str(e)}"
-            self.loop.call_soon(lambda: self.update_output_label(error_message))
+            self.loop.call_soon_threadsafe(lambda: self.update_output_label(error_message))
 
         finally:
             self.progress_bar.stop()
@@ -147,7 +151,7 @@ class PredictorApp(toga.App):
 
     def update_progress_callback(self, progress):
         # Update the progress bar on the main UI thread
-        self.loop.call_soon(lambda: self.update_progress_bar(progress))
+        self.loop.call_soon_threadsafe(lambda: self.update_progress_bar(progress))
 
     def update_progress_bar(self, progress):
         self.progress_bar.value = progress
